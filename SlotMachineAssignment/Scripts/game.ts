@@ -1,17 +1,17 @@
-﻿// CreateJS Boilerplate for COMP397
-
-
+﻿
 // VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 var canvas; // Reference to the HTML 5 Canvas element
 var stage: createjs.Stage; // Reference to the Stage
 var helloText: createjs.Text; // Holds my Hello World! Text
 var buttonBitmap: createjs.Bitmap;
 
+var game;
+var background;
+var spinButton;
+
 // FUNCTIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function init() {
-
-
 
     canvas = document.getElementById("canvas");
     stage = new createjs.Stage(canvas); // Parent Object
@@ -28,34 +28,32 @@ function init() {
 function gameLoop() {
     stage.update();
 }
+function createUI() {
+    background = new createjs.Bitmap("assets/images/slot-machine.png");
+    game.addChild(background);
 
-function buttonClicked() {
-    helloText.text = "Goodbye!";
-}
+    spinButton = new createjs.Bitmap("assets/images/SpinButton.png");
+    spinButton.x = 400;
+    spinButton.y = 450;
+    game.addChild(spinButton);
 
-function buttonOut() {
-    buttonBitmap.alpha = 1;
-}
 
-function buttonOver() {
-    buttonBitmap.alpha = 0.5;
+    //spinButton.addEventListener("click", SpinBtn);
 }
 
 
 function main() {
-    // This is where all the work happens
-    helloText = new createjs.Text("Hello World!", "40px Consolas", "#000000");
-    stage.addChild(helloText); // First Child Object that we add to the stage
 
-    // Green Button
-    buttonBitmap = new createjs.Bitmap("assets/images/button-small.png");
-    buttonBitmap.x = 100;
-    buttonBitmap.y = 100;
-    buttonBitmap.addEventListener("click", buttonClicked);
-    buttonBitmap.addEventListener("mouseout", buttonOut);
-    buttonBitmap.addEventListener("mouseover", buttonOver);
+    // instantiate my game container
+    game = new createjs.Container();
+   
 
-    stage.addChild(buttonBitmap);
+    // Create Slotmachine User Interface
+    createUI();
+
+
+    stage.addChild(game);
+    
 
 
 }
