@@ -8,6 +8,8 @@ var background;
 var spinButton;
 var betOne;
 var betTen;
+var betMax;
+var reset;
 
 var tiles = [];
 var turn = 0;
@@ -22,10 +24,12 @@ var loss = 0;
 var jackpot = 0;
 var playerBet = 1;
 var winnings = 0;
+var credits = 1000;
 
 //texts
 var betText;
 var winningsText;
+var creditText;
 
 function init() {
     canvas = document.getElementById("canvas");
@@ -65,6 +69,18 @@ function createUI() {
     betOne.y = 480;
     game.addChild(betOne);
 
+    //bet max button gui
+    betMax = new createjs.Bitmap("assets/images/BetMaxButton.png");
+    betMax.x = 265;
+    betMax.y = 423;
+    game.addChild(betMax);
+
+    //reset button
+    reset = new createjs.Bitmap("assets/images/ResetButton.png");
+    reset.x = 207;
+    reset.y = 423;
+    game.addChild(reset);
+
     //bet counter text--left
     betText = new createjs.Text(playerBet.toString(), "Arial", "#ff0000");
     betText.x = 100;
@@ -77,10 +93,33 @@ function createUI() {
     winningsText.y = 325;
     game.addChild(winningsText);
 
+    //credits text--right
+    creditText = new createjs.Text(credits.toString(), "Arial", "#ff0000");
+    creditText.x = 345;
+    creditText.y = 325;
+    game.addChild(creditText);
+
     //button listeners
+    betMax.addEventListener("click", BetMaxButton);
     betOne.addEventListener("click", BetOneButton);
     betTen.addEventListener("click", BetTenButton);
     spinButton.addEventListener("click", SpinButton);
+    reset.addEventListener("click", ResetButton);
+}
+
+function ResetButton() {
+    spins = 0;
+    win = 0;
+    loss = 0;
+    jackpot = 0;
+    playerBet = 1;
+    winnings = 0;
+    credits = 1000;
+    spinButton.addEventListener("click", SpinButton);
+
+    winningsText.text = winnings.toString();
+    betText.text = playerBet.toString();
+    creditText.text = credits.toString();
 }
 function BetOneButton() {
     playerBet = 1;
@@ -92,11 +131,25 @@ function BetTenButton() {
     betText.text = playerBet.toString();
     console.log("Bet Changed to: " + playerBet);
 }
+function BetMaxButton() {
+    playerBet = 50;
+    betText.text = playerBet.toString();
+    console.log("Bet Changed to: " + playerBet);
+}
 
 function SpinButton() {
     //Getting Random Elements from each slot
     var outCome = Math.floor((Math.random() * 65) + 1);
     var results = [0, 0, 0];
+
+    credits -= playerBet;
+
+    if (credits - playerBet < 0)
+        spinButton.removeEventListener("click", SpinButton);
+
+    //cant go below 0
+    if (credits <= 0)
+        credits = 0;
 
     for (var spin = 0; spin < 3; spin++) {
         var outCome = Math.floor((Math.random() * 65) + 1);
@@ -204,59 +257,76 @@ function payoutCheck(spotOne, spotTwo, spotThree) {
     if (blanks == 0) {
         if (sonic == 3) {
             winnings = playerBet * 10;
+            credits += winnings;
             console.log("Win on Sonic: " + winnings);
         } else if (tails == 3) {
             winnings = playerBet * 20;
+            credits += winnings;
             console.log("Win on Tails: " + winnings);
         } else if (yellowGuy == 3) {
             winnings = playerBet * 30;
+            credits += winnings;
             console.log("Win on yellowGuy: " + winnings);
         } else if (robotnic == 3) {
             winnings = playerBet * 40;
+            credits += winnings;
             console.log("Win on robotnic: " + winnings);
         } else if (bars == 3) {
             winnings = playerBet * 50;
+            credits += winnings;
             console.log("Win on bars: " + winnings);
         } else if (knuckles == 3) {
             winnings = playerBet * 75;
+            credits += winnings;
             console.log("Win on knuckles: " + winnings);
         } else if (rings == 3) {
             winnings = playerBet * 100;
+            credits += winnings;
             console.log("Win on rings: " + winnings);
         } else if (sonic == 2) {
             winnings = playerBet * 2;
+            credits += winnings;
             console.log("Win on Sonic: " + winnings);
         } else if (tails == 2) {
             winnings = playerBet * 2;
+            credits += winnings;
             console.log("Win on tails:" + winnings);
         } else if (yellowGuy == 2) {
             winnings = playerBet * 3;
+            credits += winnings;
             console.log("Win on yellowguy: " + winnings);
         } else if (robotnic == 2) {
             winnings = playerBet * 4;
+            credits += winnings;
             console.log("Win on robotnic: " + winnings);
         } else if (bars == 2) {
             winnings = playerBet * 5;
+            credits += winnings;
             console.log("Win on bars: " + winnings);
         } else if (knuckles == 2) {
             winnings = playerBet * 10;
+            credits += winnings;
             console.log("Win on knuckles: " + winnings);
         } else if (rings == 2) {
             winnings = playerBet * 20;
+            credits += winnings;
             console.log("Win on rings: " + winnings);
         } else {
             winnings = playerBet * 1;
+            credits += winnings;
             console.log("No blanks! Take your money!: " + winnings);
         }
 
         win++;
         winningsText.text = winnings.toString();
+        creditText.text = credits.toString();
         // win message to follow
     } else {
         loss++;
         console.log("Spin Again");
         winnings = 0;
         winningsText.text = winnings.toString();
+        creditText.text = credits.toString();
         //loss message to follow
     }
 
