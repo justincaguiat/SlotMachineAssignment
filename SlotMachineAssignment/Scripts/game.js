@@ -9,8 +9,11 @@ var spinButton;
 var betOne;
 var betTen;
 
+var tiles = [];
+var turn = 0;
+
 //reel array
-var reels = ["Sonic", "Tails", "YellowGuy", "Robotnic", "Bars", "Knuckles", "Rings", "blanks"];
+var reels = ["sonic", "tails", "yellowGuy", "robotnic", "bar", "knuckles", "ring", "blank"];
 
 //stats
 var spins = 0;
@@ -63,13 +66,13 @@ function createUI() {
     game.addChild(betOne);
 
     //bet counter text--left
-    betText = new createjs.Text("Bet: " + playerBet.toString(), "Arial", "#ff0000");
+    betText = new createjs.Text(playerBet.toString(), "Arial", "#ff0000");
     betText.x = 100;
     betText.y = 325;
     game.addChild(betText);
 
     //winnings text--center
-    winningsText = new createjs.Text("Winnings: " + winnings.toString(), "Arial", "#ff0000");
+    winningsText = new createjs.Text(winnings.toString(), "Arial", "#ff0000");
     winningsText.x = 220;
     winningsText.y = 325;
     game.addChild(winningsText);
@@ -81,12 +84,12 @@ function createUI() {
 }
 function BetOneButton() {
     playerBet = 1;
-    betText.text = "Bet: " + playerBet.toString();
+    betText.text = playerBet.toString();
     console.log("Bet Changed to: " + playerBet);
 }
 function BetTenButton() {
     playerBet = 10;
-    betText.text = "Bet: " + playerBet.toString();
+    betText.text = playerBet.toString();
     console.log("Bet Changed to: " + playerBet);
 }
 
@@ -114,6 +117,18 @@ function SpinButton() {
             results[spin] = 5; //knuckles
         if (outCome == 65)
             results[spin] = 6; //rings
+    }
+
+    for (var tile = 0; tile < 3; tile++) {
+        if (turn > 0) {
+            game.removeChild(tiles[tile]);
+            turn++;
+        }
+        tiles[tile] = new createjs.Bitmap("assets/images/" + reels[results[tile]] + ".png");
+        tiles[tile].x = 90 + (123 * tile);
+        tiles[tile].y = 205;
+
+        game.addChild(tiles[tile]);
     }
 
     //printing results to console.
@@ -235,13 +250,13 @@ function payoutCheck(spotOne, spotTwo, spotThree) {
         }
 
         win++;
-        winningsText.text = "Winnings: " + winnings.toString();
+        winningsText.text = winnings.toString();
         // win message to follow
     } else {
         loss++;
         console.log("Spin Again");
         winnings = 0;
-        winningsText.text = "Winnings: " + winnings.toString();
+        winningsText.text = winnings.toString();
         //loss message to follow
     }
 

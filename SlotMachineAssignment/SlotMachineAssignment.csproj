@@ -69,8 +69,8 @@
   <ItemGroup>
     <Content Include="assets\images\bar.png" />
     <Content Include="assets\images\Bet10Button.png" />
-    <Content Include="assets\images\Bet1Button.png" />
     <Content Include="assets\images\BetMaxButton.png" />
+    <Content Include="assets\images\BetOneButton.png" />
     <Content Include="assets\images\knuckles.png" />
     <Content Include="assets\images\PowerButton.png" />
     <Content Include="assets\images\ResetButton.png" />
