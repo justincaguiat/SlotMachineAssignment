@@ -44,6 +44,13 @@ function init() {
 
 // GAMELOOP
 function gameLoop() {
+    if (credits - playerBet <= 0) {
+        spinButton.removeEventListener("click", SpinButton);
+    }
+    if (credits - playerBet >= 0) {
+        spinButton.addEventListener("click", SpinButton);
+    }
+
     stage.update();
 }
 function createUI() {
@@ -103,7 +110,8 @@ function createUI() {
     betMax.addEventListener("click", BetMaxButton);
     betOne.addEventListener("click", BetOneButton);
     betTen.addEventListener("click", BetTenButton);
-    spinButton.addEventListener("click", SpinButton);
+
+    // spinButton.addEventListener("click", SpinButton);
     reset.addEventListener("click", ResetButton);
 }
 
@@ -143,9 +151,6 @@ function SpinButton() {
     var results = [0, 0, 0];
 
     credits -= playerBet;
-
-    if (credits - playerBet < 0)
-        spinButton.removeEventListener("click", SpinButton);
 
     //cant go below 0
     if (credits <= 0)
@@ -348,7 +353,6 @@ function main() {
 
     // Create Slotmachine User Interface
     createUI();
-
     stage.addChild(game);
 }
 //# sourceMappingURL=game.js.map
