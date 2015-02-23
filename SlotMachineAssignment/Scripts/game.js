@@ -7,17 +7,19 @@ var buttonBitmap;
 var game;
 var background;
 var spinButton;
+var betOne;
+var betTen;
 var reels = ["Sonic", "Tails", "YellowGuy", "Robotnic", "Bars", "Knuckles", "Rings", "blanks"];
-var firstOutcome;
-var secondOutcome;
-var thirdOutcome;
 
 var spins = 0;
 var win = 0;
 var loss = 0;
 var jackpot = 0;
-var playerBet = 0;
+var playerBet = 1;
 var winnings = 0;
+
+var betText;
+var winningsText;
 
 // FUNCTIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 function init() {
@@ -44,7 +46,39 @@ function createUI() {
     spinButton.y = 450;
     game.addChild(spinButton);
 
+    betTen = new createjs.Bitmap("assets/images/Bet10Button.png");
+    betTen.x = 323;
+    betTen.y = 423;
+    game.addChild(betTen);
+
+    betOne = new createjs.Bitmap("assets/images/BetOneButton.png");
+    betOne.x = 323;
+    betOne.y = 480;
+    game.addChild(betOne);
+
+    betText = new createjs.Text("Bet: " + playerBet.toString(), "Arial", "#ff0000");
+    betText.x = 100;
+    betText.y = 325;
+    game.addChild(betText);
+
+    winningsText = new createjs.Text("Winnings: " + winnings.toString(), "Arial", "#ff0000");
+    winningsText.x = 220;
+    winningsText.y = 325;
+    game.addChild(winningsText);
+
+    betOne.addEventListener("click", BetOneButton);
+    betTen.addEventListener("click", BetTenButton);
     spinButton.addEventListener("click", SpinButton);
+}
+function BetOneButton() {
+    playerBet = 1;
+    betText.text = "Bet: " + playerBet.toString();
+    console.log("Bet Changed to: " + playerBet);
+}
+function BetTenButton() {
+    playerBet = 10;
+    betText.text = "Bet: " + playerBet.toString();
+    console.log("Bet Changed to: " + playerBet);
 }
 
 function SpinButton() {
@@ -73,9 +107,9 @@ function SpinButton() {
             results[spin] = 6; //rings
     }
 
-    console.log("Slot One: " + reels[results[0]]);
-    console.log("Slot Two: " + reels[results[1]]);
-    console.log("Slot Three: " + reels[results[2]]);
+    console.log("Reel One: " + reels[results[0]]);
+    console.log("Reel Two: " + reels[results[1]]);
+    console.log("Reel Three: " + reels[results[2]]);
 
     payoutCheck(reels[results[0]], reels[results[1]], reels[results[2]]);
 }
@@ -91,8 +125,6 @@ function payoutCheck(spotOne, spotTwo, SpotThree) {
     var knuckles = 0;
     var rings = 0;
     var blanks = 0;
-
-    playerBet = 1;
 
     for (var i = 0; i < reels.length; i++) {
         for (var r = 0; r < allSlots.length; r++) {
@@ -191,11 +223,14 @@ function payoutCheck(spotOne, spotTwo, SpotThree) {
         }
 
         win++;
-        // showWinMessage();
+        winningsText.text = "Winnings: " + winnings.toString();
+        // win message to follow
     } else {
         loss++;
         console.log("Spin Again");
-        //  showLossMessage();
+        winnings = 0;
+        winningsText.text = "Winnings: " + winnings.toString();
+        //loss message to follow
     }
 
     console.log("");
