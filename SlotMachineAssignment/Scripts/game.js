@@ -1,9 +1,8 @@
-﻿
-// VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-var canvas; // Reference to the HTML 5 Canvas element
-var stage: createjs.Stage; // Reference to the Stage
-var helloText: createjs.Text; // Holds my Hello World! Text
-var buttonBitmap: createjs.Bitmap;
+﻿// VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+var canvas;
+var stage;
+var helloText;
+var buttonBitmap;
 
 var game;
 var background;
@@ -20,12 +19,8 @@ var jackpot = 0;
 var playerBet = 0;
 var winnings = 0;
 
-
-
 // FUNCTIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 function init() {
-
     canvas = document.getElementById("canvas");
     stage = new createjs.Stage(canvas); // Parent Object
     stage.enableMouseOver(20); // Turn on Mouse Over events
@@ -35,7 +30,6 @@ function init() {
 
     main();
 }
-
 
 // GAMELOOP
 function gameLoop() {
@@ -49,7 +43,6 @@ function createUI() {
     spinButton.x = 400;
     spinButton.y = 450;
     game.addChild(spinButton);
-
 
     spinButton.addEventListener("click", SpinButton);
 }
@@ -65,15 +58,10 @@ function SpinButton() {
     thirdOutcome = Math.floor(Math.random() * reels.length);
     console.log("Slot Three: " + reels[thirdOutcome]);
 
-
-
     payoutCheck(reels[firstOutcome], reels[secondOutcome], reels[thirdOutcome]);
-
-
 }
 
 function payoutCheck(spotOne, spotTwo, SpotThree) {
-
     var allSlots = [spotOne, spotTwo, SpotThree];
 
     var sonic = 0;
@@ -134,73 +122,58 @@ function payoutCheck(spotOne, spotTwo, SpotThree) {
         }
     }
     console.log("");
-    
+
     if (blanks == 0) {
         if (sonic == 3) {
             winnings = playerBet * 10;
             console.log("Win on Sonic: " + winnings);
-        }
-        else if (tails == 3) {
+        } else if (tails == 3) {
             winnings = playerBet * 20;
             console.log("Win on Tails: " + winnings);
-        }
-        else if (yellowGuy == 3) {
+        } else if (yellowGuy == 3) {
             winnings = playerBet * 30;
             console.log("Win on yellowGuy: " + winnings);
-        }
-        else if (robotnic == 3) {
+        } else if (robotnic == 3) {
             winnings = playerBet * 40;
             console.log("Win on robotnic: " + winnings);
-        }
-        else if (bars == 3) {
+        } else if (bars == 3) {
             winnings = playerBet * 50;
             console.log("Win on bars: " + winnings);
-        }
-        else if (knuckles == 3) {
+        } else if (knuckles == 3) {
             winnings = playerBet * 75;
             console.log("Win on knuckles: " + winnings);
-        }
-        else if (rings == 3) {
+        } else if (rings == 3) {
             winnings = playerBet * 100;
             console.log("Win on rings: " + winnings);
-        }
-        else if (sonic == 2) {
+        } else if (sonic == 2) {
             winnings = playerBet * 2;
             console.log("Win on Sonic: " + winnings);
-        }
-        else if (tails == 2) {
+        } else if (tails == 2) {
             winnings = playerBet * 2;
             console.log("Win on tails:" + winnings);
-        }
-        else if (yellowGuy == 2) {
+        } else if (yellowGuy == 2) {
             winnings = playerBet * 3;
             console.log("Win on yellowguy: " + winnings);
-        }
-        else if (robotnic == 2) {
+        } else if (robotnic == 2) {
             winnings = playerBet * 4;
             console.log("Win on robotnic: " + winnings);
-        }
-        else if (bars == 2) {
+        } else if (bars == 2) {
             winnings = playerBet * 5;
             console.log("Win on bars: " + winnings);
-        }
-        else if (knuckles == 2) {
+        } else if (knuckles == 2) {
             winnings = playerBet * 10;
             console.log("Win on knuckles: " + winnings);
-        }
-        else if (rings == 2) {
+        } else if (rings == 2) {
             winnings = playerBet * 20;
             console.log("Win on rings: " + winnings);
-        }
-        else {
+        } else {
             winnings = playerBet * 1;
-            console.log("No blanks! Take your money!: " + winnings);    
+            console.log("No blanks! Take your money!: " + winnings);
         }
 
         win++;
         // showWinMessage();
-    }
-    else {
+    } else {
         loss++;
         console.log("Spin Again");
         //  showLossMessage();
@@ -217,22 +190,13 @@ function payoutCheck(spotOne, spotTwo, SpotThree) {
     console.log("");
 }
 
-
 function main() {
-
     // instantiate my game container
     game = new createjs.Container();
-   
 
     // Create Slotmachine User Interface
     createUI();
 
-
     stage.addChild(game);
-    
-
-
 }
-
-
-
+//# sourceMappingURL=game.js.map
