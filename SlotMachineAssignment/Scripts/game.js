@@ -287,6 +287,7 @@ function payoutCheck(spotOne, spotTwo, spotThree) {
         } else if (rings == 3) {
             winnings = playerBet * 100;
             credits += winnings;
+            jackpot++;
             console.log("Win on rings: " + winnings);
         } else if (sonic == 2) {
             winnings = playerBet * 2;
