@@ -56,18 +56,47 @@ function createUI() {
 
 function SpinButton() {
     //Getting Random Elements from each slot
-    firstOutcome = Math.floor(Math.random() * reels.length);
-    console.log("Slot One: " + reels[firstOutcome]);
+    var outCome = Math.floor((Math.random() * 65) + 1);
+    var results = [0,0,0];
 
-    secondOutcome = Math.floor(Math.random() * reels.length);
-    console.log("Slot Two: " + reels[secondOutcome]);
+    //firstOutcome = Math.floor(Math.random() * reels.length);
+    //console.log("Slot One: " + reels[firstOutcome]);
 
-    thirdOutcome = Math.floor(Math.random() * reels.length);
-    console.log("Slot Three: " + reels[thirdOutcome]);
+    //secondOutcome = Math.floor(Math.random() * reels.length);
+    //console.log("Slot Two: " + reels[secondOutcome]);
+
+    //thirdOutcome = Math.floor(Math.random() * reels.length);
+    //console.log("Slot Three: " + reels[thirdOutcome]);
+
+    for (var spin = 0; spin < 3; spin++){
+        var outCome = Math.floor((Math.random() * 65) + 1);
+
+        if (outCome >= 1 && outCome<= 27)
+            results[spin] = 7; //blanks
+        if (outCome >= 28 && outCome<= 37)
+            results[spin] = 0; //sonic
+        if (outCome >= 38 && outCome <= 46)
+            results[spin] = 1; //tails
+        if (outCome >= 47 && outCome <= 54)
+            results[spin] = 2; //yellowGuy
+        if (outCome >= 55 && outCome <= 59)
+            results[spin] = 3;//robotnic
+        if (outCome >= 60 && outCome <= 62)
+            results[spin] = 4; //bars
+        if (outCome >= 63 && outCome <= 64)
+            results[spin] = 5;//knuckles
+        if (outCome == 65)
+            results[spin] = 6;//rings
+            
+    }
+
+    console.log("Slot One: " + reels[results[0]]);
+    console.log("Slot Two: " + reels[results[1]]);
+    console.log("Slot Three: " + reels[results[2]]);
 
 
 
-    payoutCheck(reels[firstOutcome], reels[secondOutcome], reels[thirdOutcome]);
+    payoutCheck(reels[results[0]], reels[results[1]], reels[results[2]]);
 
 
 }
@@ -217,7 +246,6 @@ function payoutCheck(spotOne, spotTwo, SpotThree) {
     console.log("");
 }
 
-
 function main() {
 
     // instantiate my game container
@@ -229,9 +257,6 @@ function main() {
 
 
     stage.addChild(game);
-    
-
-
 }
 
 
