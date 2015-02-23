@@ -1,16 +1,18 @@
 ﻿// VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 var canvas;
 var stage;
-var helloText;
-var buttonBitmap;
 
+//GUI
 var game;
 var background;
 var spinButton;
 var betOne;
 var betTen;
+
+//reel array
 var reels = ["Sonic", "Tails", "YellowGuy", "Robotnic", "Bars", "Knuckles", "Rings", "blanks"];
 
+//stats
 var spins = 0;
 var win = 0;
 var loss = 0;
@@ -18,10 +20,10 @@ var jackpot = 0;
 var playerBet = 1;
 var winnings = 0;
 
+//texts
 var betText;
 var winningsText;
 
-// FUNCTIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 function init() {
     canvas = document.getElementById("canvas");
     stage = new createjs.Stage(canvas); // Parent Object
@@ -38,34 +40,41 @@ function gameLoop() {
     stage.update();
 }
 function createUI() {
+    //slot machine gui
     background = new createjs.Bitmap("assets/images/slot-machine.png");
     game.addChild(background);
 
+    //spin button
     spinButton = new createjs.Bitmap("assets/images/SpinButton.png");
     spinButton.x = 400;
     spinButton.y = 450;
     game.addChild(spinButton);
 
+    //bet ten button gui
     betTen = new createjs.Bitmap("assets/images/Bet10Button.png");
     betTen.x = 323;
     betTen.y = 423;
     game.addChild(betTen);
 
+    //bet one button gui
     betOne = new createjs.Bitmap("assets/images/BetOneButton.png");
     betOne.x = 323;
     betOne.y = 480;
     game.addChild(betOne);
 
+    //bet counter text--left
     betText = new createjs.Text("Bet: " + playerBet.toString(), "Arial", "#ff0000");
     betText.x = 100;
     betText.y = 325;
     game.addChild(betText);
 
+    //winnings text--center
     winningsText = new createjs.Text("Winnings: " + winnings.toString(), "Arial", "#ff0000");
     winningsText.x = 220;
     winningsText.y = 325;
     game.addChild(winningsText);
 
+    //button listeners
     betOne.addEventListener("click", BetOneButton);
     betTen.addEventListener("click", BetTenButton);
     spinButton.addEventListener("click", SpinButton);
@@ -107,6 +116,7 @@ function SpinButton() {
             results[spin] = 6; //rings
     }
 
+    //printing results to console.
     console.log("Reel One: " + reels[results[0]]);
     console.log("Reel Two: " + reels[results[1]]);
     console.log("Reel Three: " + reels[results[2]]);
@@ -114,8 +124,9 @@ function SpinButton() {
     payoutCheck(reels[results[0]], reels[results[1]], reels[results[2]]);
 }
 
-function payoutCheck(spotOne, spotTwo, SpotThree) {
-    var allSlots = [spotOne, spotTwo, SpotThree];
+//checks payout and displays stats
+function payoutCheck(spotOne, spotTwo, spotThree) {
+    var allSlots = [spotOne, spotTwo, spotThree];
 
     var sonic = 0;
     var tails = 0;
@@ -174,6 +185,7 @@ function payoutCheck(spotOne, spotTwo, SpotThree) {
     }
     console.log("");
 
+    //winnings calculations
     if (blanks == 0) {
         if (sonic == 3) {
             winnings = playerBet * 10;
@@ -233,6 +245,7 @@ function payoutCheck(spotOne, spotTwo, SpotThree) {
         //loss message to follow
     }
 
+    //console stats
     console.log("");
     spins++;
     console.log("Number is spins " + spins);
