@@ -21,10 +21,11 @@ var reels = ["sonic", "tails", "yellowGuy", "robotnic", "bar", "knuckles", "ring
 var spins = 0;
 var win = 0;
 var loss = 0;
-var jackpot = 0;
+var jackpotWins = 0;
 var playerBet = 1;
 var winnings = 0;
 var credits = 1000;
+var jackpot = 10000;
 
 //texts
 var betText;
@@ -50,7 +51,6 @@ function gameLoop() {
     if (credits - playerBet >= 0) {
         spinButton.addEventListener("click", SpinButton);
     }
-
     stage.update();
 }
 function createUI() {
@@ -119,7 +119,8 @@ function ResetButton() {
     spins = 0;
     win = 0;
     loss = 0;
-    jackpot = 0;
+    jackpotWins = 0;
+    jackpot = 10000;
     playerBet = 1;
     winnings = 0;
     credits = 1000;
@@ -151,6 +152,7 @@ function SpinButton() {
     var results = [0, 0, 0];
 
     credits -= playerBet;
+    jackpot += playerBet;
 
     //cant go below 0
     if (credits <= 0)
@@ -287,7 +289,7 @@ function payoutCheck(spotOne, spotTwo, spotThree) {
         } else if (rings == 3) {
             winnings = playerBet * 100;
             credits += winnings;
-            jackpot++;
+            jackpotWins++;
             console.log("Win on rings: " + winnings);
         } else if (sonic == 2) {
             winnings = playerBet * 2;
@@ -322,7 +324,6 @@ function payoutCheck(spotOne, spotTwo, spotThree) {
             credits += winnings;
             console.log("No blanks! Take your money!: " + winnings);
         }
-
         win++;
         winningsText.text = winnings.toString();
         creditText.text = credits.toString();
@@ -342,8 +343,9 @@ function payoutCheck(spotOne, spotTwo, spotThree) {
     console.log("Number is spins " + spins);
     console.log("Number is wins " + win);
     console.log("Number is losses " + loss);
-    console.log("Number of Jackpots " + jackpot);
-    console.log("jackPot Percentage " + Math.floor(jackpot / spins * 100) + " %");
+    console.log("Number of Jackpots " + jackpotWins);
+    console.log("Current Jackpot: " + jackpot);
+    console.log("jackPot Percentage " + Math.floor(jackpotWins / spins * 100) + " %");
     console.log("Win percentage : " + Math.floor(win / spins * 100) + " %");
     console.log("");
 }
