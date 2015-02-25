@@ -11,6 +11,8 @@ var betOne;
 var betTen;
 var betMax;
 var reset;
+var lose;
+var jackpotImg;
 
 var tiles: createjs.Bitmap[] = [];
 var turn = 0;
@@ -52,14 +54,30 @@ function gameLoop() {
         spinButton.removeEventListener("click", SpinButton);
     }
     if (credits - playerBet >= 0) {
-        spinButton.addEventListener("click", SpinButton);
+        spinButton.addEventListener("click", SpinButton); 
     }    
+    if (credits == 0) {
+        lose.visible = true;
+    }
+    if (credits >= 1) {
+        lose.visible = false;
+    }
+
+
     stage.update();
 }
 function createUI() {
     //slot machine gui
     background = new createjs.Bitmap("assets/images/slot-machine.png");
     game.addChild(background);
+
+    jackpotImg = new createjs.Bitmap("assets/images/jackpot.png");
+    game.addChild(jackpotImg);
+    jackpotImg.visible = false;
+
+    lose = new createjs.Bitmap("assets/images/lose.png");
+    game.addChild(lose);
+    lose.visible = false;
 
     //spin button
     spinButton = new createjs.Bitmap("assets/images/SpinButton.png");
