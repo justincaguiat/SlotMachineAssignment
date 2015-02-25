@@ -1,4 +1,9 @@
-﻿
+﻿//File Name: game.ts
+//Author: Justin Caguiat
+//Slot machine code using createjs
+//Last revised Feb 25 2015
+
+
 // VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 var canvas; // Reference to the HTML 5 Canvas element
 var stage: createjs.Stage; // Reference to the Stage
@@ -13,6 +18,7 @@ var betMax;
 var reset;
 var lose;
 var jackpotImg;
+var isJackpot = false;
 
 var tiles: createjs.Bitmap[] = [];
 var turn = 0;
@@ -34,6 +40,7 @@ var jackpot = 10000;
 var betText;
 var winningsText;
 var creditText;
+var jackpotText;
 
 function init() {
 
@@ -62,7 +69,19 @@ function gameLoop() {
     if (credits >= 1) {
         lose.visible = false;
     }
+    //JACKPOT MSG+++++++++++++++++++++++++++++++++
+    if (isJackpot == true) {
+        jackpotImg.visible = true;
+    }
+    if (isJackpot == false) {
+        jackpotImg.visible = false;
+    }
+    //JACKPOT MSG+++++++++++++++++++++++++++++++++
 
+    jackpotText.text = jackpot.toString();
+    winningsText.text = winnings.toString();
+    creditText.text = credits.toString();
+    betText.text = playerBet.toString();
 
     stage.update();
 }
@@ -70,63 +89,61 @@ function createUI() {
     //slot machine gui
     background = new createjs.Bitmap("assets/images/slot-machine.png");
     game.addChild(background);
-
-    jackpotImg = new createjs.Bitmap("assets/images/jackpot.png");
-    game.addChild(jackpotImg);
-    jackpotImg.visible = false;
-
-    lose = new createjs.Bitmap("assets/images/lose.png");
-    game.addChild(lose);
-    lose.visible = false;
-
     //spin button
     spinButton = new createjs.Bitmap("assets/images/SpinButton.png");
     spinButton.x = 400;
     spinButton.y = 450;
     game.addChild(spinButton);
-
     //bet ten button gui
     betTen = new createjs.Bitmap("assets/images/Bet10Button.png");
     betTen.x = 323;
     betTen.y = 423;
     game.addChild(betTen);
-
     //bet one button gui
     betOne = new createjs.Bitmap("assets/images/BetOneButton.png");
     betOne.x = 323;
     betOne.y = 480;
     game.addChild(betOne);
-
     //bet max button gui
     betMax = new createjs.Bitmap("assets/images/BetMaxButton.png");
     betMax.x = 265;
     betMax.y = 423;
     game.addChild(betMax);
-
     //reset button
     reset = new createjs.Bitmap("assets/images/ResetButton.png");
     reset.x = 207;
     reset.y = 423;
     game.addChild(reset);
-
     //bet counter text--left
     betText = new createjs.Text(playerBet.toString(), "Arial", "#ff0000");
     betText.x = 100;
     betText.y = 325;
     game.addChild(betText);
-
     //winnings text--center
     winningsText = new createjs.Text(winnings.toString(), "Arial", "#ff0000");
     winningsText.x = 220;
     winningsText.y = 325;
     game.addChild(winningsText);
-
     //credits text--right
     creditText = new createjs.Text(credits.toString(), "Arial", "#ff0000");
     creditText.x = 345;
     creditText.y = 325;
     game.addChild(creditText);
-
+    //Jackpot Text
+    jackpotText = new createjs.Text(jackpot.toString(), "Arial", "#ff0000");
+    jackpotText.x = 220;
+    jackpotText.y = 93;
+    jackpotText.scaleX = 3;
+    jackpotText.scaleY = 3;
+    game.addChild(jackpotText);
+    //lose text
+    lose = new createjs.Bitmap("assets/images/lose.png");
+    game.addChild(lose);
+    lose.visible = false;
+    //jackpot img
+    jackpotImg = new createjs.Bitmap("assets/images/jackpot.png");
+    game.addChild(jackpotImg);
+    jackpotImg.visible = false;
     //button listeners
     betMax.addEventListener("click", BetMaxButton);
     betOne.addEventListener("click", BetOneButton);
@@ -153,17 +170,14 @@ function ResetButton() {
 }
 function BetOneButton() {
     playerBet = 1;
-    betText.text = playerBet.toString();
     console.log("Bet Changed to: " + playerBet);
 }
 function BetTenButton() {
     playerBet = 10;
-    betText.text = playerBet.toString();
     console.log("Bet Changed to: " + playerBet);
 }
 function BetMaxButton() {
     playerBet = 50;
-    betText.text = playerBet.toString();
     console.log("Bet Changed to: " + playerBet);
 }
 
@@ -174,6 +188,7 @@ function SpinButton() {
 
     credits -= playerBet;
     jackpot += playerBet;
+    isJackpot = false;
 
     //cant go below 0
     if (credits <= 0)
@@ -225,9 +240,7 @@ function SpinButton() {
 
     //checks payout and displays stats
     function payoutCheck(spotOne, spotTwo, spotThree) {
-
         var allSlots = [spotOne, spotTwo, spotThree];
-
         var sonic = 0;
         var tails = 0;
         var yellowGuy = 0;
@@ -317,12 +330,15 @@ function SpinButton() {
                 credits += winnings;
                 console.log("Win on knuckles: " + winnings);
             }
+            // JACKPOT AREA************************************
             else if (rings == 3) {
                 winnings = playerBet * 100;
                 credits += winnings;
                 jackpotWins++;
+                isJackpot = true;
                 console.log("Win on rings: " + winnings);
             }
+            //JACKPOT AREA*************************************
             else if (sonic == 2) {
                 winnings = playerBet * 2;
                 credits += winnings;
@@ -364,17 +380,11 @@ function SpinButton() {
                 console.log("No blanks! Take your money!: " + winnings);
             }
             win++;
-            winningsText.text = winnings.toString();
-            creditText.text = credits.toString();
-            // win message to follow
         }
         else {
             loss++;
             console.log("Spin Again");
-            winnings = 0;
-            winningsText.text = winnings.toString();
-            creditText.text = credits.toString();
-            //loss message to follow
+            winnings = 0;    
         }
         //console stats
         console.log("");
@@ -390,7 +400,6 @@ function SpinButton() {
     }
 
     function main() {
-
         // instantiate my game container
         game = new createjs.Container();
         // Create Slotmachine User Interface

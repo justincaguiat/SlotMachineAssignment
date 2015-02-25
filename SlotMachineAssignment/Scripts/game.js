@@ -1,4 +1,8 @@
-﻿// VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+﻿//File Name: game.ts
+//Author: Justin Caguiat
+//Slot machine code using createjs
+//Last revised Feb 25 2015
+// VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 var canvas;
 var stage;
 
@@ -12,6 +16,7 @@ var betMax;
 var reset;
 var lose;
 var jackpotImg;
+var isJackpot = false;
 
 var tiles = [];
 var turn = 0;
@@ -33,6 +38,7 @@ var jackpot = 10000;
 var betText;
 var winningsText;
 var creditText;
+var jackpotText;
 
 function init() {
     canvas = document.getElementById("canvas");
@@ -60,20 +66,26 @@ function gameLoop() {
         lose.visible = false;
     }
 
+    //JACKPOT MSG+++++++++++++++++++++++++++++++++
+    if (isJackpot == true) {
+        jackpotImg.visible = true;
+    }
+    if (isJackpot == false) {
+        jackpotImg.visible = false;
+    }
+
+    //JACKPOT MSG+++++++++++++++++++++++++++++++++
+    jackpotText.text = jackpot.toString();
+    winningsText.text = winnings.toString();
+    creditText.text = credits.toString();
+    betText.text = playerBet.toString();
+
     stage.update();
 }
 function createUI() {
     //slot machine gui
     background = new createjs.Bitmap("assets/images/slot-machine.png");
     game.addChild(background);
-
-    jackpotImg = new createjs.Bitmap("assets/images/jackpot.png");
-    game.addChild(jackpotImg);
-    jackpotImg.visible = false;
-
-    lose = new createjs.Bitmap("assets/images/lose.png");
-    game.addChild(lose);
-    lose.visible = false;
 
     //spin button
     spinButton = new createjs.Bitmap("assets/images/SpinButton.png");
@@ -123,6 +135,24 @@ function createUI() {
     creditText.y = 325;
     game.addChild(creditText);
 
+    //Jackpot Text
+    jackpotText = new createjs.Text(jackpot.toString(), "Arial", "#ff0000");
+    jackpotText.x = 220;
+    jackpotText.y = 93;
+    jackpotText.scaleX = 3;
+    jackpotText.scaleY = 3;
+    game.addChild(jackpotText);
+
+    //lose text
+    lose = new createjs.Bitmap("assets/images/lose.png");
+    game.addChild(lose);
+    lose.visible = false;
+
+    //jackpot img
+    jackpotImg = new createjs.Bitmap("assets/images/jackpot.png");
+    game.addChild(jackpotImg);
+    jackpotImg.visible = false;
+
     //button listeners
     betMax.addEventListener("click", BetMaxButton);
     betOne.addEventListener("click", BetOneButton);
@@ -149,17 +179,14 @@ function ResetButton() {
 }
 function BetOneButton() {
     playerBet = 1;
-    betText.text = playerBet.toString();
     console.log("Bet Changed to: " + playerBet);
 }
 function BetTenButton() {
     playerBet = 10;
-    betText.text = playerBet.toString();
     console.log("Bet Changed to: " + playerBet);
 }
 function BetMaxButton() {
     playerBet = 50;
-    betText.text = playerBet.toString();
     console.log("Bet Changed to: " + playerBet);
 }
 
@@ -170,6 +197,7 @@ function SpinButton() {
 
     credits -= playerBet;
     jackpot += playerBet;
+    isJackpot = false;
 
     //cant go below 0
     if (credits <= 0)
@@ -219,7 +247,6 @@ function SpinButton() {
 //checks payout and displays stats
 function payoutCheck(spotOne, spotTwo, spotThree) {
     var allSlots = [spotOne, spotTwo, spotThree];
-
     var sonic = 0;
     var tails = 0;
     var yellowGuy = 0;
@@ -307,6 +334,7 @@ function payoutCheck(spotOne, spotTwo, spotThree) {
             winnings = playerBet * 100;
             credits += winnings;
             jackpotWins++;
+            isJackpot = true;
             console.log("Win on rings: " + winnings);
         } else if (sonic == 2) {
             winnings = playerBet * 2;
@@ -342,16 +370,10 @@ function payoutCheck(spotOne, spotTwo, spotThree) {
             console.log("No blanks! Take your money!: " + winnings);
         }
         win++;
-        winningsText.text = winnings.toString();
-        creditText.text = credits.toString();
-        // win message to follow
     } else {
         loss++;
         console.log("Spin Again");
         winnings = 0;
-        winningsText.text = winnings.toString();
-        creditText.text = credits.toString();
-        //loss message to follow
     }
 
     //console stats
