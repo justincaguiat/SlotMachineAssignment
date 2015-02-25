@@ -71,7 +71,10 @@
     <Content Include="assets\images\Bet10Button.png" />
     <Content Include="assets\images\BetMaxButton.png" />
     <Content Include="assets\images\BetOneButton.png" />
+    <Content Include="assets\images\blank.png" />
+    <Content Include="assets\images\jackpot.png" />
     <Content Include="assets\images\knuckles.png" />
+    <Content Include="assets\images\lose.png" />
     <Content Include="assets\images\PowerButton.png" />
     <Content Include="assets\images\ResetButton.png" />
     <Content Include="assets\images\ring.png" />
