@@ -15,6 +15,7 @@ var spinButton;
 var betOne;
 var betTen;
 var betMax;
+var power;
 var reset;
 var lose;
 var jackpotImg;
@@ -114,6 +115,11 @@ function createUI() {
     reset.x = 207;
     reset.y = 423;
     game.addChild(reset);
+    //power button
+    power = new createjs.Bitmap("assets/images/PowerButton.png");
+    power.x = 149;
+    power.y = 423;
+    game.addChild(power);
     //bet counter text--left
     betText = new createjs.Text(playerBet.toString(), "Arial", "#ff0000");
     betText.x = 100;
@@ -148,6 +154,7 @@ function createUI() {
     betMax.addEventListener("click", BetMaxButton);
     betOne.addEventListener("click", BetOneButton);
     betTen.addEventListener("click", BetTenButton);
+    power.addEventListener("click", PowerButton);
    // spinButton.addEventListener("click", SpinButton);
     reset.addEventListener("click", ResetButton);
 }
@@ -167,6 +174,9 @@ function ResetButton() {
     betText.text = playerBet.toString();
     creditText.text = credits.toString();
     
+}
+function PowerButton() {
+    window.location = "http://www.google.ca";
 }
 function BetOneButton() {
     playerBet = 1;
